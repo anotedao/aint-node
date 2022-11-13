@@ -98,6 +98,9 @@ func (m *Monitor) getBalance() {
 
 func (m *Monitor) processItems() {
 	fee := Fee + (uint64(len(m.Items)) * MassFee)
+	if fee%Fee != 0 {
+		fee += MassFee
+	}
 	amount := m.Balance - fee
 
 	pk := crypto.MustPublicKeyFromBase58(conf.PublicKey)
