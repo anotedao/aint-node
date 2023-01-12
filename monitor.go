@@ -140,7 +140,7 @@ func (m *Monitor) processItems() {
 	_, err = client.Transactions.Broadcast(ctx, t)
 	if err != nil {
 		log.Println(err)
-		logTelegram(err.Error())
+		// logTelegram(err.Error())
 	}
 }
 
