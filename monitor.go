@@ -91,6 +91,7 @@ func (m *Monitor) getBalance() {
 	if err != nil {
 		log.Println(err)
 		logTelegram(err.Error())
+		return
 	}
 
 	m.Balance = br.Balance
