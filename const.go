@@ -9,6 +9,8 @@ const (
 
 	StakeAddress = "3A9y1Zy78DDApbQWXKxonXxci6DvnJnnNZD"
 
+	StakeAddressAnote = "3AR11vcAeEfWFMTKbcxTo79LcbH7uSmhftZ"
+
 	NodesListAddress = "3AVTze8bR1SqqMKv3uLedrnqCuWpdU7GZwX"
 
 	// Fee is regular fee amount
