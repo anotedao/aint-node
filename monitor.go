@@ -201,6 +201,7 @@ func (m *Monitor) processItemsAnote() {
 	as, _ := proto.NewOptionalAssetFromString("")
 
 	var tr []proto.MassTransferEntry
+	counter := 1
 
 	for a, i := range m.ItemsAnote {
 		am := uint64(math.Floor(float64(amount) * i))
@@ -210,29 +211,33 @@ func (m *Monitor) processItemsAnote() {
 			Amount:    am,
 		}
 		tr = append(tr, mte)
-	}
 
-	t := proto.NewUnsignedMassTransferWithProofs(2, pk, *as, tr, fee, uint64(ts), nil)
+		if counter%100 == 0 || counter == len(m.ItemsAnote) {
+			t := proto.NewUnsignedMassTransferWithProofs(2, pk, *as, tr, fee, uint64(ts), nil)
 
-	err := t.Sign(55, sk)
-	if err != nil {
-		log.Println(err)
-		logTelegram(err.Error())
-	}
+			err := t.Sign(55, sk)
+			if err != nil {
+				log.Println(err)
+				logTelegram(err.Error())
+			}
 
-	client, err := client.NewClient(client.Options{BaseUrl: AnoteNodeURL, Client: &http.Client{}})
-	if err != nil {
-		log.Println(err)
-		logTelegram(err.Error())
-	}
+			client, err := client.NewClient(client.Options{BaseUrl: AnoteNodeURL, Client: &http.Client{}})
+			if err != nil {
+				log.Println(err)
+				logTelegram(err.Error())
+			}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
 
-	_, err = client.Transactions.Broadcast(ctx, t)
-	if err != nil {
-		log.Println(err)
-		// logTelegram(err.Error())
+			_, err = client.Transactions.Broadcast(ctx, t)
+			if err != nil {
+				log.Println(err)
+				// logTelegram(err.Error())
+			}
+		}
+
+		counter++
 	}
 }
 
